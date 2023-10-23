@@ -23,12 +23,14 @@ public class HashTable<T> {
     }
 
     private int hash(String key) {
-       return 0;
+        int sum = 0;
+        for (int i = 0; i < key.length(); i++) {
+            sum += key.charAt(i);
+        }
+        return sum % size;
     }
 
     private int getHashValue(T key) {
-       // return 0; //
-
         int hashValue = -1;
         if (key instanceof Integer) {
             hashValue = hash((int) key);
@@ -44,7 +46,7 @@ public class HashTable<T> {
             items.get(hashValue).add(key);
             return new ImmutablePair<>(hashValue, items.get(hashValue).indexOf(key));
         }
-        throw new Exception("Key " + key + " exists in the table!");
+        throw new Exception("Key " + key + " is already in the table!");
     }
 
     public boolean contains(T key) {
@@ -62,6 +64,6 @@ public class HashTable<T> {
 
     @Override
     public String toString() {
-        return "HashTable{" + "elements=" + items + '}';
+        return "HashTable{" + "items=" + items + '}';
     }
 }

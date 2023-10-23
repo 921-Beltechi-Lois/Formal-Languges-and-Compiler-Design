@@ -1,4 +1,4 @@
-
+import org.apache.commons.lang3.tuple.Pair;
 
 public class SymbolTable {
     private int size;
@@ -13,6 +13,29 @@ public class SymbolTable {
         this.stringConstantsHashTable = new HashTable<>(size);
     }
 
+    public Pair<Integer, Integer> addIdentifier(String name) throws Exception {
+        return identifiersHashTable.add(name);
+    }
+
+    public Pair<Integer, Integer> addIntConstant(int constant) throws Exception {
+        return intConstantsHashTable.add(constant);
+    }
+
+    public Pair<Integer, Integer> addStringConstant(String constant) throws Exception {
+        return stringConstantsHashTable.add(constant);
+    }
+
+    public Pair<Integer, Integer> getPositionIdentifier(String name) {
+        return identifiersHashTable.getPosition(name);
+    }
+
+    public Pair<Integer, Integer> getPositionIntConstant(int constant) {
+        return intConstantsHashTable.getPosition(constant);
+    }
+
+    public Pair<Integer, Integer> getPositionStringConstant(String constant) {
+        return stringConstantsHashTable.getPosition(constant);
+    }
 
     @Override
     public String toString() {
