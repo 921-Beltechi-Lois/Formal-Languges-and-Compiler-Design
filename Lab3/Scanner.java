@@ -83,8 +83,10 @@ public class Scanner {
         }
     }
 
-    private boolean treatStringConstant() {
-        var regexForStringConstant = Pattern.compile("^\"[a-zA-z0-9_ ?:*^+=.!]*\"");
+    private boolean checkStringConstant() {
+        //var regexForStringConstant = Pattern.compile("^\"[a-zA-z0-9_ ?:*^+=.!]*\"");
+        var regexForStringConstant = Pattern.compile("^\"[^\"]*\"");
+
         var matcher = regexForStringConstant.matcher(program.substring(index));
         if (!matcher.find()) {
             if (Pattern.compile("^\"[^\"]\"").matcher(program.substring(index)).find()) {
@@ -107,7 +109,7 @@ public class Scanner {
         return true;
     }
 
-    private boolean treatIntConstant(){
+    private boolean checkIntConstant(){
         var regexForIntConstant = Pattern.compile("^([+-]?[1-9][0-9]*|0)");
         var matcher = regexForIntConstant.matcher(program.substring(index));
         if (!matcher.find()) {
@@ -138,7 +140,7 @@ public class Scanner {
         return symbolTable.hasIdentifier(possibleIdentifier);
     }
 
-    private boolean treatIdentifier() {
+    private boolean checkIdentifier() {
         var regexForIdentifier = Pattern.compile("^([a-zA-Z_][a-zA-Z0-9_]*)");
         var matcher = regexForIdentifier.matcher(program.substring(index));
         if (!matcher.find()) {
@@ -159,8 +161,9 @@ public class Scanner {
         return true;
     }
 
-    private boolean treatFromTokenList() {
+    private boolean checkFromTokenList() {
         String possibleToken = program.substring(index).split(" ")[0];
+        //Reserved Words
         for (var reservedToken: reservedWords) {
             if (possibleToken.startsWith(reservedToken)) {
                 var regex = "^" + "[a-zA-Z0-9_]*" + reservedToken + "[a-zA-Z0-9_]+";
@@ -172,6 +175,7 @@ public class Scanner {
                 return true;
             }
         }
+        // Op + sep
         for (var token : tokens) {
             if (Objects.equals(token, possibleToken)) {
                 index += token.length();
@@ -193,18 +197,19 @@ public class Scanner {
         if (index == program.length()) {
             return;
         }
-        if (treatIdentifier()) {
+        if (checkStringConstant()) {
             return;
         }
-        if (treatStringConstant()) {
+        if (checkFromTokenList()) { // (1) ReservedWord && (op + sep)
             return;
         }
-        if (treatIntConstant()) {
+        if (checkIdentifier()) { //(2)
             return;
         }
-        if (treatFromTokenList()) {
+        if (checkIntConstant()) {
             return;
         }
+
         throw new ScannerException("Lexical error: invalid token at line " + currentLine + ", index " + index);
     }
 
