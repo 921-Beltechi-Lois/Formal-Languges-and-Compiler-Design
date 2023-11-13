@@ -11,6 +11,7 @@ public class Transition {
         this.label = label;
     }
 
+    //getters, setters
     public String getFrom() {
         return from;
     }
