@@ -28,7 +28,7 @@ public class Main {
     }
 
     public static void runGrammar(){
-        Grammar grammar = new Grammar("Input_Output/G2.txt");
+        Grammar grammar = new Grammar("Input_Output/G1.txt");
         boolean notStopped = true;
         while(notStopped) {
             printMenu();
