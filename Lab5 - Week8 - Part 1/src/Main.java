@@ -1,6 +1,10 @@
+import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.StreamSupport;
 
 public class Main {
     private static void printToFile(String filePath, Object object) {
@@ -17,7 +21,9 @@ public class Main {
         System.out.println("1. Print non-terminals");
         System.out.println("2. Print terminals");
         System.out.println("3. Print starting symbol");
-
+        System.out.println("4. Print all productions");
+        System.out.println("5. Print all productions for a non terminal");
+        System.out.println("6. Is the grammar a context free grammar (CFG) ?");
 
     }
 
@@ -42,7 +48,26 @@ public class Main {
                 case 3:
                     System.out.println("\n\nStarting symbol -> " + grammar.getStartingSymbol());
                     break;
-
+                case 4:
+                    System.out.println("\n\nAll productions: ");
+                    grammar.getProductions().forEach((lhs, rhs)-> System.out.println(lhs + " -> " + rhs));
+                    break;
+                case 5:
+                    Scanner sc= new Scanner(System.in); //System.in is a standard input stream.
+                    System.out.print("Enter a non-terminal: ");
+                    String nonTerminal= sc.nextLine(); //reads string.
+                    System.out.println("\n\n Productions for the non-terminal: " + nonTerminal);
+                    List<String> key = new ArrayList<>();
+                    key.add(nonTerminal);
+                    try {
+                        grammar.getProductions().get(key).forEach((rhs) -> System.out.println(key + " -> " + rhs));
+                    } catch (NullPointerException e) {
+                        System.out.println("This is not a defined non-terminal");
+                    }
+                    break;
+                case 6:
+                    System.out.println("\n\nIs it a context free grammar (CFG) ? " + grammar.isCFG());
+                    break;
             }
         }
 

@@ -39,6 +39,7 @@ public class Grammar {
         }
     }
 
+
     /**
      * With this method we check if a grammar is a context free grammar
      * -> First we check if the starting symbols is found within the non-terminals
