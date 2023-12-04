@@ -66,7 +66,10 @@ public class Main {
                     }
                     break;
                 case 7:
-///////////////////////////////////////
+                    Grammar grammar1 = new Grammar("Input_Output/G1.txt");
+                    LR lrAlg = new LR(grammar1);
+
+                    System.out.println(lrAlg.canonicalCollection().getStates());
                     break;
                 case 6:
                     System.out.println("\n\nIs it a context free grammar (CFG) ? " + grammar.isCFG());

@@ -95,4 +95,46 @@ public class LR {
         return new State(result);
     }
     /////////////////////////
+
+    /**
+     * With this method we compute the canonical collection for the grammar.
+     * @return - the formed canonical collection
+     */
+    public CanonicalCollection canonicalCollection(){
+        CanonicalCollection canonicalCollection = new CanonicalCollection();
+
+        canonicalCollection.addState(
+                closure(
+                        new Item(
+                                workingGrammar.getStartingSymbol(),
+                                workingGrammar.getProductionsForNonTerminal(workingGrammar.getStartingSymbol()).get(0),
+                                0
+                        )
+                )
+        );
+
+        int index = 0;
+        while(index < canonicalCollection.getStates().size()){
+            for(String symbol: canonicalCollection.getStates().get(index).getSymbolsSucceedingTheDot()) {
+                State newState = goTo(canonicalCollection.getStates().get(index), symbol);
+                if (newState.getItems().size() != 0) {
+                    int indexState = canonicalCollection.getStates().indexOf(newState);
+                    if (indexState == -1) {
+                        canonicalCollection.addState(newState);
+                    }
+                }
+            }
+            ++index;
+        }
+        return canonicalCollection;
+
+    }
+
+    public Grammar getGrammar() {
+        return grammar;
+    }
+
+    public Grammar getWorkingGrammar() {
+        return workingGrammar;
+    }
 }
