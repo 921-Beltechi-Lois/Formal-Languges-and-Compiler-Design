@@ -16,9 +16,12 @@ public class Grammar {
     // LR(0)
     private Set<String> nonTerminals;
     private Set<String> terminals;
-    private Map<List<String>, Set<List<String>>> productions;
+    private Map<List<String>, List<List<String>>> productions;
     private String startingSymbol;
     private boolean isCFG;
+    private boolean isEnriched;
+
+    public static String enrichedStartingGrammarSymbol = "S0";
 
     /**
      * With this method we first:
@@ -28,13 +31,13 @@ public class Grammar {
      * -> We go through each production from the right hand side and format each of the in order to be added to the map
      * @param production -> represents the production we are about to work
      */
-    private void processProduction(String production){
+    private void processProduction(String production) {
         String[] leftAndRightHandSide = production.split(this.SEPARATOR_LEFT_RIGHT_HAND_SIDE);
         List<String> splitLHS = List.of(leftAndRightHandSide[0].split(this.TRANSITION_CONCATENATION));
         String[] splitRHS = leftAndRightHandSide[1].split(this.SEPARATOR_OR_TRANSITION);
 
-        this.productions.putIfAbsent(splitLHS, new HashSet<>());
-        for(int i=0; i<splitRHS.length; i++){
+        this.productions.putIfAbsent(splitLHS, new ArrayList<>());
+        for (int i = 0; i < splitRHS.length; i++) {
             this.productions.get(splitLHS).add(Arrays.stream(splitRHS[i].split(this.TRANSITION_CONCATENATION)).collect(Collectors.toList()));
         }
     }
@@ -77,8 +80,8 @@ public class Grammar {
      */
     private void loadFromFile(String filePath) {
         try (Scanner scanner = new Scanner(new File(filePath))) {
-            this.nonTerminals = new HashSet<>(List.of(scanner.nextLine().split(this.ELEMENT_SEPARATOR)));
-            this.terminals = new HashSet<>(List.of(scanner.nextLine().split(this.ELEMENT_SEPARATOR)));
+            this.nonTerminals = new LinkedHashSet<>(List.of(scanner.nextLine().split(this.ELEMENT_SEPARATOR)));
+            this.terminals = new LinkedHashSet<>(List.of(scanner.nextLine().split(this.ELEMENT_SEPARATOR)));
             this.startingSymbol = scanner.nextLine();
 
             this.productions = new HashMap<>();
@@ -93,6 +96,17 @@ public class Grammar {
         }
     }
 
+    public Grammar(Set<String> nonTerminals, Set<String> terminals, String startingSymbol, Map<List<String>, List<List<String>>> productions) {
+        this.nonTerminals = nonTerminals;
+        this.terminals = terminals;
+        this.startingSymbol = startingSymbol;
+        this.productions = productions;
+        this.isEnriched = true;
+    }
+
+    public boolean getIsEnriched(){
+        return this.isEnriched;
+    }
 
     public Grammar(String filePath) {
         this.loadFromFile(filePath);
@@ -106,7 +120,7 @@ public class Grammar {
         return this.terminals;
     }
 
-    public Map<List<String>, Set<List<String>>> getProductions() {
+    public Map<List<String>, List<List<String>>> getProductions() {
         return this.productions;
     }
 
@@ -118,4 +132,51 @@ public class Grammar {
         return this.isCFG;
     }
 
+    /**
+     * With this method we prepare the grammar for the LR(0) algorithm by adding another starting state S0
+     * which has the production S0 -> currentStartingSymbol, if it is already enriched, we just throw an error
+     *
+     * @return the enriched grammar
+     */
+    public Grammar getEnrichedGrammar() throws Exception {
+        if (isEnriched) {
+            throw new Exception("The Grammar is already enriched!");
+        }
+
+        Grammar enrichedGrammar = new Grammar(nonTerminals, terminals, enrichedStartingGrammarSymbol, productions);
+
+        enrichedGrammar.nonTerminals.add(enrichedStartingGrammarSymbol);
+        enrichedGrammar.productions.putIfAbsent(List.of(enrichedStartingGrammarSymbol), new ArrayList<>());
+        enrichedGrammar.productions.get(List.of(enrichedStartingGrammarSymbol)).add(List.of(startingSymbol));
+
+        return enrichedGrammar;
+    }
+
+    /**
+     * With this method, we go through all the productions, and for a non-terminal from the left hand side, we write all the productions separately as pairs
+     *
+     * @return a list of pairs which represents each production individually
+     */
+    public List<Pair<String, List<String>>> getOrderedProductions() {
+
+        List<Pair<String, List<String>>> result = new ArrayList<>();
+
+        this.productions.forEach(
+                (lhs, rhs) -> rhs.forEach(
+                        (prod) -> result.add(new Pair<>(lhs.get(0), prod))
+                )
+        );
+
+        return result;
+
+    }
+
+    /**
+     * With this method we get the productions for a non-terminal
+     * @param nonTerminal -  the non-terminal for which we want to get the productions
+     * @return - productions of the given non-terminal
+     */
+    public List<List<String>> getProductionsForNonTerminal(String nonTerminal) {
+        return getProductions().get(List.of(nonTerminal));
+    }
 }

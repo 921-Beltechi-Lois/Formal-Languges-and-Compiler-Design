@@ -24,10 +24,10 @@ public class Main {
         System.out.println("4. Print all productions");
         System.out.println("5. Print all productions for a non terminal");
         System.out.println("6. Is the grammar a context free grammar (CFG) ?");
-
+        System.out.println("7. Run LR ");
     }
 
-    public static void runGrammar(){
+    public static void runGrammar() throws Exception {
         Grammar grammar = new Grammar("Input_Output/G1.txt");
         boolean notStopped = true;
         while(notStopped) {
@@ -65,6 +65,9 @@ public class Main {
                         System.out.println("This is not a defined non-terminal");
                     }
                     break;
+                case 7:
+///////////////////////////////////////
+                    break;
                 case 6:
                     System.out.println("\n\nIs it a context free grammar (CFG) ? " + grammar.isCFG());
                     break;
@@ -75,7 +78,7 @@ public class Main {
     }
 
 
-    public static void launchApp(){
+    public static void launchApp() throws Exception {
         System.out.println("0. Exit");
         System.out.println("1. Grammar");
         System.out.println("Your option: ");
@@ -98,7 +101,7 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         launchApp();
     }
 }
