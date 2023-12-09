@@ -10,22 +10,29 @@ import java.util.*;
 public class State {
 
     private StateActionType stateActionType;
-    private Set<Item> items;
-
+    private final Set<Item> items;
 
     public State(Set<Item> states){
         this.items = states;
+        this.setActionForState();
     }
 
     public Set<Item> getItems(){
         return items;
     }
 
-    @Override
-    public String toString(){
-        return items.toString();
+    /**
+     * With this method we get the action type for a state
+     * @return - the action type for the state
+     */
+    public StateActionType getStateActionType(){
+        return this.stateActionType;
     }
 
+    /**
+     * With this method we get the symbols which come after the dot
+     * @return a list with the corresponding symbols
+     */
     public List<String> getSymbolsSucceedingTheDot(){
         Set<String> symbols = new LinkedHashSet<>();
 
@@ -68,6 +75,11 @@ public class State {
         }
 
         return false;
+    }
+
+    @Override
+    public String toString(){
+        return stateActionType + " - " + items;
     }
 
 }
