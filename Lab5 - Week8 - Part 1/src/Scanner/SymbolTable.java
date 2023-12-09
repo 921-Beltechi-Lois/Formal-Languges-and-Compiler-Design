@@ -1,4 +1,6 @@
-import java.util.ArrayList;
+package Scanner;
+
+import Utils.Pair;
 
 public class SymbolTable {
 

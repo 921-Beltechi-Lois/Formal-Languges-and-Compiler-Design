@@ -1,3 +1,7 @@
+package LR;
+
+import Utils.Pair;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -13,7 +17,7 @@ public class Grammar {
     private final String EPSILON = "EPS";
     private final String SEPARATOR_LEFT_RIGHT_HAND_SIDE = "->";
 
-    // LR(0)
+    // LR.LR(0)
     private Set<String> nonTerminals;
     private Set<String> terminals;
     private Map<List<String>, List<List<String>>> productions;
@@ -133,14 +137,14 @@ public class Grammar {
     }
 
     /**
-     * With this method we prepare the grammar for the LR(0) algorithm by adding another starting state S0
+     * With this method we prepare the grammar for the LR.LR(0) algorithm by adding another starting state S0
      * which has the production S0 -> currentStartingSymbol, if it is already enriched, we just throw an error
      *
      * @return the enriched grammar
      */
     public Grammar getEnrichedGrammar() throws Exception {
         if (isEnriched) {
-            throw new Exception("The Grammar is already enriched!");
+            throw new Exception("The LR.Grammar is already enriched!");
         }
 
         Grammar enrichedGrammar = new Grammar(nonTerminals, terminals, enrichedStartingGrammarSymbol, productions);

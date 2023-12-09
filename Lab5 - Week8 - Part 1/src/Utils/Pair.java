@@ -1,3 +1,5 @@
+package Utils;
+
 import java.util.Objects;
 
 public class Pair<First,Second> {
@@ -34,5 +36,4 @@ public class Pair<First,Second> {
     public int hashCode() {
         return Objects.hash(first, second);
     }
-
 }

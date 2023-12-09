@@ -1,3 +1,7 @@
+package Scanner;
+
+import Utils.Pair;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -163,7 +167,7 @@ public class MyScanner {
      *  d) 0 - for constants
      *  e) 1 - for identifiers
      *  If the token is a constant or an identifier we add it to the Symbol Table
-     *  After figuring out the category, we add them to the ProgramInternalForm + their position in the symbol table ( (-1, -1) for anything that is not a constant and an identifier ) + their category (0, 1, 2, 3, 4)
+     *  After figuring out the category, we add them to the Scanner.ProgramInternalForm + their position in the symbol table ( (-1, -1) for anything that is not a constant and an identifier ) + their category (0, 1, 2, 3, 4)
      *  If the token is not in any of the categories, we print a message with the line and the column of the error + the token which is invalid.
      */
 
@@ -184,13 +188,15 @@ public class MyScanner {
                 this.pif.add(new Pair<>(token, new Pair<>(-1, -1)), 3);
             } else if(this.separators.contains(token)){
                 this.pif.add(new Pair<>(token, new Pair<>(-1, -1)), 4);
-            } else if(Pattern.compile("^'[1-9]'|'[a-zA-Z]'|\"[0-9]*[a-zA-Z ]*\"$").matcher(token).matches() || new FiniteAutomaton("Input_Output/FA_integer_constant.txt").acceptsSequence(token)) {
+            } else if(Pattern.compile("^0|[-|+][1-9]([0-9])*|'[1-9]'|'[a-zA-Z]'|\"[0-9]*[a-zA-Z ]*\"$").matcher(token).matches()) {
                 this.symbolTable.add(token);
-                this.pif.add(new Pair<>(token, symbolTable.findPositionOfTerm(token)), 0);
+                this.pif.add(new Pair<>("CONST", symbolTable.findPositionOfTerm(token)), 0);
+//                this.pif.add(new Utils.Pair<>("const", symbolTable.findPositionOfTerm(token)), 0);
             }
-            else if(new FiniteAutomaton("Input_Output/FA_identifier.txt").acceptsSequence(token)) {
+            else if(Pattern.compile("^([a-zA-Z]|_)|[a-zA-Z_0-9]*").matcher(token).matches()) {
                 this.symbolTable.add(token);
-                this.pif.add(new Pair<>(token, symbolTable.findPositionOfTerm(token)), 1);
+                this.pif.add(new Pair<>("IDENTIFIER", symbolTable.findPositionOfTerm(token)), 1);
+//                this.pif.add(new Utils.Pair<>("ident", symbolTable.findPositionOfTerm(token)), 1);
             } else {
                 Pair<Integer, Integer> pairLineColumn = t.getSecond();
                 System.out.println("Error at line: " + pairLineColumn.getFirst() + " and column: " + pairLineColumn.getSecond() + ", invalid token: " + t.getFirst());
@@ -206,7 +212,7 @@ public class MyScanner {
 
     /**
      *
-     * @return the ProgramInternalForm
+     * @return the Scanner.ProgramInternalForm
      */
     public ProgramInternalForm getPif(){
         return this.pif;
@@ -214,7 +220,7 @@ public class MyScanner {
 
     /**
      *
-     * @return the SymbolTable
+     * @return the Scanner.SymbolTable
      */
     public SymbolTable getSymbolTable() {
         return this.symbolTable;

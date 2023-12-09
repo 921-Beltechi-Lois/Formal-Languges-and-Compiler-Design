@@ -1,4 +1,9 @@
-import java.lang.reflect.Array;
+package LR;
+
+import State.Item;
+import State.State;
+import Utils.Pair;
+
 import java.util.*;
 
 public class LR {
@@ -70,11 +75,11 @@ public class LR {
     }
 
     /**
-     * With this method, in state S, we search LR(0) item that has dot in front of symbol X.
+     * With this method, in state S, we search LR.LR(0) item that has dot in front of symbol X.
      * Move the dot after symbol X and call closure for this new item.
      * @param state - the state S from which we want to move
      * @param elem - the symbol after we look
-     * @return - returns a State containing  a list of states
+     * @return - returns a State.State containing  a list of states
      * composed of the states for each computer closure
      */
     public State goTo(State state, String elem) {

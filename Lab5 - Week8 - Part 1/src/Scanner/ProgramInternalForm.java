@@ -1,3 +1,7 @@
+package Scanner;
+
+import Utils.Pair;
+
 import java.util.ArrayList;
 import java.util.List;
 

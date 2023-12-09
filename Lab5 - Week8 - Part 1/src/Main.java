@@ -1,10 +1,11 @@
-import javax.swing.*;
+import LR.LR;
+
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.StreamSupport;
+import LR.*;
 
 public class Main {
     private static void printToFile(String filePath, Object object) {
@@ -24,7 +25,7 @@ public class Main {
         System.out.println("4. Print all productions");
         System.out.println("5. Print all productions for a non terminal");
         System.out.println("6. Is the grammar a context free grammar (CFG) ?");
-        System.out.println("7. Run LR ");
+        System.out.println("7. Run LR.LR ");
     }
 
     public static void runGrammar() throws Exception {
@@ -83,7 +84,7 @@ public class Main {
 
     public static void launchApp() throws Exception {
         System.out.println("0. Exit");
-        System.out.println("1. Grammar");
+        System.out.println("1. LR.Grammar");
         System.out.println("Your option: ");
 
         Scanner scanner = new Scanner(System.in);
