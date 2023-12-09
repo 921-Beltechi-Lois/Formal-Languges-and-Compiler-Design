@@ -94,6 +94,8 @@ public class Grammar {
             }
 
             this.isCFG = this.checkIfCFG();
+            this.isEnriched = false;
+
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();

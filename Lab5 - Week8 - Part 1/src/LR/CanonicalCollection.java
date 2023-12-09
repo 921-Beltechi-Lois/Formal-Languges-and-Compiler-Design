@@ -35,4 +35,15 @@ public class CanonicalCollection {
         return this.adjacencyList;
     }
 
+    /**
+     * With this method we keep track of which states are created by another state and through what symbol
+     * @param indexFirstState - the index of the state we start from
+     * @param symbol - the symbol we goTo
+     * @param indexSecondState - the index of the state we obtained
+     */
+
+    public void connectStates(Integer indexFirstState, String symbol, Integer indexSecondState){
+        this.adjacencyList.put(new Pair<>(indexFirstState, symbol), indexSecondState);
+    }
+
 }

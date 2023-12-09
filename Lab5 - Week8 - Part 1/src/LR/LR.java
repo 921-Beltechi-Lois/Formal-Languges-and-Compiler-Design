@@ -3,7 +3,10 @@ package LR;
 import State.Item;
 import State.State;
 import Utils.Pair;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
+import java.io.IOException;
 import java.util.*;
 
 public class LR {
@@ -119,14 +122,17 @@ public class LR {
         );
 
         int index = 0;
-        while(index < canonicalCollection.getStates().size()){
-            for(String symbol: canonicalCollection.getStates().get(index).getSymbolsSucceedingTheDot()) {
+        while (index < canonicalCollection.getStates().size()) {
+            for (String symbol : canonicalCollection.getStates().get(index).getSymbolsSucceedingTheDot()) {
                 State newState = goTo(canonicalCollection.getStates().get(index), symbol);
                 if (newState.getItems().size() != 0) {
                     int indexState = canonicalCollection.getStates().indexOf(newState);
                     if (indexState == -1) {
                         canonicalCollection.addState(newState);
+                        indexState = canonicalCollection.getStates().size() - 1;
                     }
+//                    System.out.println("(" + index + ", " + symbol + ") -> " + indexState);
+                    canonicalCollection.connectStates(index, symbol, indexState);
                 }
             }
             ++index;
@@ -134,6 +140,16 @@ public class LR {
         return canonicalCollection;
 
     }
+
+    public void writeToFile(String file, String line) throws IOException {
+        FileWriter fw = new FileWriter(file, true);
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(line);
+        bw.newLine();
+        bw.close();
+    }
+
+    ////////////////////////////////////////////////////////////////
 
     public Grammar getGrammar() {
         return grammar;
