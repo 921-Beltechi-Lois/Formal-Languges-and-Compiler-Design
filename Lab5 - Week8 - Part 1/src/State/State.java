@@ -79,7 +79,7 @@ public class State {
 
     @Override
     public String toString(){
-        return stateActionType + " - " + items;
+        return stateActionType + " - " + items + "\n";
     }
 
 }
