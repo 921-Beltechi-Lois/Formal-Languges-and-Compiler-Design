@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class Grammar {
 
 
-    private final String ELEMENT_SEPARATOR = "&";
+    private final String ELEMENT_SEPARATOR = " ";
 
     private final String SEPARATOR_OR_TRANSITION = "\\|";
     private final String TRANSITION_CONCATENATION = " ";

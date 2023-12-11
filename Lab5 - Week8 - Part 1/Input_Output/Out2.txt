@@ -1,0 +1,2 @@
+ERROR at state 0 - before symbol start
+Row: stateIndex= 0, action='SHIFT', reduceNonTerminal='null', reduceContent = null, shifts = [(a, 2), (S, 1)]

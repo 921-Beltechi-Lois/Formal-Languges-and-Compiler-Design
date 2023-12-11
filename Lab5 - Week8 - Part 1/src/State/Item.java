@@ -35,6 +35,12 @@ public class Item {
         return this.positionForDot;
     }
 
+
+    public boolean dotIsLast(){
+        return this.positionForDot == this.rightHandSide.size();
+    }
+
+
     @Override
     public String toString(){
         List<String> rightHandSide1 = this.rightHandSide.subList(0, positionForDot);
