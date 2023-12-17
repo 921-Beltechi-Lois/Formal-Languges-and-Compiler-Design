@@ -3,6 +3,7 @@ import LR.Grammar;
 import LR.LR;
 import ParsingTable.ParsingTable;
 
+import Tests.Tests;
 import Utils.Pair;
 import Scanner.*;
 
@@ -29,6 +30,7 @@ public class Main {
         System.out.println("6. Is the grammar a context free grammar (CFG) ?");
         System.out.println("7. Run LR0 for G1.txt and parse Sequence.txt");
         System.out.println("8. Run LR0 for G2.txt");
+        System.out.println("9. Run tests");
 
     }
 
@@ -89,18 +91,20 @@ public class Main {
                     CanonicalCollection canonicalCollection = lrAlg.canonicalCollection();
 
                     System.out.println("States");
-//                    writeToFile("Input_Output/Out2.txt", "States");
+                    writeToFile("Input_Output/Out1.txt", "States");
 
                     for(int i = 0; i < canonicalCollection.getStates().size(); i++){
                         System.out.println(i + " " + canonicalCollection.getStates().get(i));
+                        writeToFile("Input_Output/Out1.txt", i + " " + canonicalCollection.getStates().get(i));
+
                     }
 
                     System.out.println("\nState.State transitions");
-//                    writeToFile("Input_Output/Out2.txt", "\nState transitions");
+                        writeToFile("Input_Output/Out1.txt", "\nState transitions");
 
                     for(Map.Entry<Pair<Integer, String>, Integer> entry: canonicalCollection.getAdjacencyList().entrySet()){
                         System.out.println(entry.getKey() + " -> " + entry.getValue());
-//                        writeToFile("Input_Output/Out2.txt", entry.getKey() + " -> " + entry.getValue());
+                            writeToFile("Input_Output/Out1.txt", entry.getKey() + " -> " + entry.getValue());
                     }
 
                     System.out.println();
@@ -108,11 +112,11 @@ public class Main {
                     ParsingTable parsingTable = lrAlg.getParsingTable(canonicalCollection);
                     if(parsingTable.entries.size() == 0){
                         System.out.println("We have conflicts in the parsing table so we can't go further with the algorithm");
-                        writeToFile("Input_Output/Out2.txt", "We have conflicts in the parsing table so we can't go further with the algorithm");
+                        writeToFile("Input_Output/Out1.txt", "We have conflicts in the parsing table so we can't go further with the algorithm");
                     }
                     else {
                         System.out.println(parsingTable);
-//                        writeToFile("Input_Output/Out2.txt", parsingTable.toString());
+                        writeToFile("Input_Output/Out1.txt", parsingTable.toString());
                     }
 
                     Stack<String> word = readSequence("Input_Output/Sequence.txt");
@@ -125,7 +129,7 @@ public class Main {
 
 
 
-                    Grammar grammar2 = new Grammar("Input_Output/G1.txt");
+                    Grammar grammar2 = new Grammar("Input_Output/G2.txt");
                     LR lrAlg2 = new LR(grammar2);
 
                     CanonicalCollection canonicalCollection2 = lrAlg2.canonicalCollection();
@@ -202,6 +206,16 @@ public class Main {
 
 
                     break;
+
+
+
+                case 9:
+                    Tests test = new Tests();
+                    test.runAllClosureTest();
+                    test.runAllGoToTests();
+                    test.runAllCanonicalTests();
+                    break;
+
 
 
 

@@ -71,7 +71,7 @@ public class ParsingTreeRow {
         result.append("index = ").append(index);
         result.append(", info = ").append(info);
         result.append(", leftChild = ").append(leftChild != null ? leftChild.getIndex() : -1);
-        result.append(", rightChild = ").append(rightSibling != null ? rightSibling.getIndex() : -1);
+        result.append(", rightSibling = ").append(rightSibling != null ? rightSibling.getIndex() : -1);
         result.append(", parent = ").append(parent != null ? parent.getIndex() : -1);
         result.append(", level = ").append(level);
 
