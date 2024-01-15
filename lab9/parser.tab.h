@@ -71,7 +71,8 @@
      COMMA = 287,
      IDENTIFIER = 288,
      INTCONSTANT = 289,
-     STRINGCONSTANT = 290
+     STRINGCONSTANT = 290,
+     CHARCONSTANT = 291
    };
 #endif
 

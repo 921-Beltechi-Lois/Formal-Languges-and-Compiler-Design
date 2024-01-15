@@ -53,12 +53,14 @@ Program : PROG BRACKETOPEN CompoundStatement BRACKETCLOSE     { printf("Program 
 CompoundStatement : Statement SEMICOLON CompoundStatement     { printf("CompoundStatement -> Statement ; CompoundStatement\n"); }
                   | Statement SEMICOLON                       { printf("CompoundStatement -> Statement ;\n"); }
                   ;
+//stmtlist
 Statement : DeclarationStatement     { printf("Statement -> DeclarationStatement\n"); }
           | AssignmentStatement     { printf("Statement -> AssignmentStatement\n"); }
           | IfStatement     { printf("Statement -> IfStatement\n"); }
           | WhileStatement     { printf("Statement -> WhileStatement\n"); }
           | PrintStatement     { printf("Statement -> PrintStatement\n"); }
           | ReadStatement     { printf("Statement -> ReadStatement\n"); }
+          //| IOStatement     { printf("Statement -> IOStatement\n"); } 
           ;
 DeclarationStatement : IDENTIFIER OPEN Type CLOSE COMMA DeclarationStatement { printf("DeclarationStatement -> IDENTIFIER ( Type ) , DeclarationStatement\n"); }
                    | IDENTIFIER OPEN Type CLOSE     { printf("DeclarationStatement -> IDENTIFIER ( Type )\n"); }
@@ -72,6 +74,7 @@ Type : INT     { printf("Type -> int\n"); }
 AssignmentStatement : IDENTIFIER EQ Expression     { printf("AssignmentStatement -> IDENTIFIER = Expression\n"); }
                     | IDENTIFIER EQ ArrayStatement     { printf("AssignmentStatement -> IDENTIFIER = ArrayStatement\n"); }
                     ;
+//simplstmt = AssignmentStatement | IOStatement
 Expression : Expression PLUS Term     { printf("Expression -> Expression + Term\n"); }
            | Expression MINUS Term     { printf("Expression -> Expression - Term\n"); }
            | Term     { printf("Expression -> Term\n"); }
@@ -97,14 +100,24 @@ IfStatement : IF Condition BRACKETOPEN CompoundStatement BRACKETCLOSE  { printf(
             ;
 WhileStatement : WHILE Condition BRACKETOPEN CompoundStatement BRACKETCLOSE  { printf("WhileStatement -> while Expression { CompoundStatement }\n"); }
                ;
+// Structstmt : IfStmt, WhileStmt ; should be wrapped inside struct
 PrintStatement : PRINT OPEN Expression CLOSE     { printf("PrintStatement -> print ( Expression )\n"); }
                | PRINT OPEN STRINGCONSTANT CLOSE     { printf("PrintStatement -> print ( STRINGCONSTANT )\n"); }
-               | PRINT OPEN CHARCONSTANT CLOSE { printf ("PrintStatement" -> print ( STRINGCONSTANT )\n");}
+               | PRINT OPEN CHARCONSTANT CLOSE { printf ("PrintStatement -> print ( STRINGCONSTANT )\n"); }
                ;
 ReadStatement : READ OPEN IDENTIFIER CLOSE     { printf("ReadStatement -> read ( IDENTIFIER )\n"); }
               ;
+
+// IoStatement:  Print & read inside IOStatement... -> here treated separately; too late for that
+
+
 Condition : Expression Relation Expression     { printf("Condition -> Expression Relation Expression\n"); }
           ;
+
+//IOStatement : ReadStatement     { printf("IOStatement -> ReadStatement\n"); }
+//            | PrintStatement     { printf("IOStatement -> PrintStatement\n"); }
+//            ;
+
 Relation : LESS     { printf("Relation -> <\n"); }
          | LESSEQ     { printf("Relation -> <=\n"); }
          | EQQ     { printf("Relation -> ==\n"); }

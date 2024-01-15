@@ -5,10 +5,10 @@ read(b);
 read(c);
 smallest = a;
 if smallest > b {
-    smallest = b;
+	smallest = b;
 };
 if smallest > c {
-    smallest = c;
+	smallest = c;
 };
-print(smallest);
+print smallest);
 }
